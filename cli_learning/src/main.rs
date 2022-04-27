@@ -1,18 +1,15 @@
 #![allow(unused)]
 
-use clap::Parser;
 use anyhow::{Context, Result};
+use clap::Parser;
 use log::{debug, info, warn};
 
-
-#[derive(Debug)]
-#[derive(Parser)]
+#[derive(Debug, Parser)]
 struct Cli {
     pattern: String,
     #[clap(parse(from_os_str))]
     path: std::path::PathBuf,
 }
-
 
 fn main() -> Result<()> {
     // Logging!
@@ -29,6 +26,6 @@ fn main() -> Result<()> {
             debug!("{}, {}", &lineno, &line)
         }
         lineno += 1;
-    };
+    }
     Ok(())
 }
