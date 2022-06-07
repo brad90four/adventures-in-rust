@@ -57,10 +57,12 @@ pub struct Sys {
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct Weather {
-    pub description: String,
-    pub icon: String,
-    pub id: i64,
-    pub main: String,
+    vec:[
+        pub description: String,
+        pub icon: String,
+        pub id: i64,
+        pub main: String,
+    ];
 }
 
 #[derive(Serialize, Deserialize, Debug)]

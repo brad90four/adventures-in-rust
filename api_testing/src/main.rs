@@ -51,7 +51,7 @@ async fn main() -> Result<(), Error> {
         id: data["id"].as_i64().unwrap(),
         main: data_struct::Main {
             feels_like: data["main"].get("feels_like").unwrap().as_f64().unwrap(),
-            grnd_level: data["main"].get("grnd_level").unwrap().as_i64().unwrap(),
+            grnd_level: data["main"].get("grnd_level").unwrap().as_i64().unwrap_or(0),
             humidity: data["main"].get("humidity").unwrap().as_i64().unwrap(),
             pressure: data["main"].get("pressure").unwrap().as_i64().unwrap(),
             sea_level: data["main"].get("sea_level").unwrap().as_i64().unwrap(),
@@ -66,15 +66,19 @@ async fn main() -> Result<(), Error> {
         },
         timezone: data["timezone"].as_i64().unwrap(),
         visibility: data["visibility"].as_i64().unwrap(),
-        weather: data_struct::Weather {
-            description: data["weather"].get("description").unwrap().to_string(), // broken here
+        weather: data["weather"].unwrap().data_struct::Weather {
+            // description: "weather".to_string(),
             icon: data["weather"].get("icon").unwrap().to_string(),
+            // icon: "icon".to_string(),
             id: data["weather"].get("id").unwrap().as_i64().unwrap(),
+            // id: 1234,
             main: data["weather"].get("main").unwrap().to_string(),
+            // main: "main".to_string(),
         },
         wind: data_struct::Wind {
             deg: data["wind"].get("deg").unwrap().as_i64().unwrap(),
-            gust: data["wind"].get("gust").unwrap().as_f64().unwrap(),
+            // gust: data["wind"].get("gust").unwrap().as_f64().unwrap(),
+            gust: 0.0,
             speed: data["wind"].get("speed").unwrap().as_f64().unwrap(),
         }
     };
