@@ -37,8 +37,12 @@ async fn main() -> Result<(), Error> {
     let weather_data: OpenWeatherMapResponse = response.json().await?;
     println!("{:?}", &weather_data);
 
-    // error is currently: 
-    // Error: reqwest::Error { kind: Decode, source: Error("missing field `feelsLike`", line: 1, column: 229) }
+    println!(
+        "The temperature at ({:?}, {:?}) is: {:?} degrees F", 
+        weather_data.coord.lat.unwrap(),
+        weather_data.coord.lon.unwrap(),
+        weather_data.main.temp.unwrap()
+    );
     
     Ok(())
 }
