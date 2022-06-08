@@ -7,15 +7,15 @@ use serde::{Deserialize, Serialize};
 pub struct OpenWeatherMapResponse {
     pub base: String,
     pub clouds: Clouds,
-    pub cod: i64,
+    pub cod: Option<f64>,
     pub coord: Coord,
-    pub dt: i64,
-    pub id: i64,
+    pub dt: Option<f64>,
+    pub id: Option<f64>,
     pub main: Main,
     pub name: String,
     pub sys: Sys,
-    pub timezone: i64,
-    pub visibility: i64,
+    pub timezone: Option<f64>,
+    pub visibility: Option<f64>,
     pub weather: Vec<Weather>,
     pub wind: Wind,
 }
@@ -23,35 +23,35 @@ pub struct OpenWeatherMapResponse {
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct Clouds {
-    pub all: i64,
+    pub all: Option<f64>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct Coord {
-    pub lat: f64,
-    pub lon: f64,
+    pub lat: Option<f64>,
+    pub lon: Option<f64>,
 }
 
 
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct Main {
-    pub feels_like: f64,
-    pub grnd_level: i64,
-    pub humidity: i64,
-    pub pressure: i64,
-    pub sea_level: i64,
-    pub temp: f64,
-    pub temp_max: f64,
-    pub temp_min: f64,
+    pub feels_like: Option<f64>,
+    pub grnd_level: Option<f64>,
+    pub humidity: Option<f64>,
+    pub pressure: Option<f64>,
+    pub sea_level: Option<f64>,
+    pub temp: Option<f64>,
+    pub temp_max: Option<f64>,
+    pub temp_min: Option<f64>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct Sys {
-    pub sunrise: i64,
-    pub sunset: i64,
+    pub sunrise: Option<f64>,
+    pub sunset: Option<f64>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -59,14 +59,14 @@ pub struct Sys {
 pub struct Weather {
     pub description: String,
     pub icon: String,
-    pub id: i64,
+    pub id: Option<f64>,
     pub main: String,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct Wind {
-    pub deg: i64,
-    pub gust: f64,
-    pub speed: f64,
+    pub deg: Option<f64>,
+    pub gust: Option<f64>,
+    pub speed: Option<f64>,
 }
