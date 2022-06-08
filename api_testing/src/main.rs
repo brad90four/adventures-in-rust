@@ -1,18 +1,13 @@
 // api_test in rust
-extern crate reqwest;
-extern crate serde;
-extern crate serde_json;
-extern crate tokio;
+pub mod data_struct;
 
 use dotenv::dotenv;
 use reqwest::Error;
-#[allow(unused_imports)]
-use serde::Deserialize;
-#[allow(unused_imports)]
-use serde_json::Value;
 use std::env;
+use serde_json::to_string_pretty;
+use serde_json::Value;
 
-pub mod data_struct;
+use crate::data_struct::OpenWeatherMapResponse;
 
 #[tokio::main] // used for async calls
 async fn main() -> Result<(), Error> {
@@ -32,61 +27,18 @@ async fn main() -> Result<(), Error> {
     println!("request url: {}", request_url);
 
     let response = reqwest::get(&request_url).await?;
-
     println!("reponse status: {}", &response.status());
 
-    let data = &response.json::<Value>().await?;
+    let response2 = reqwest::get(&request_url).await?;
 
-    let weather_data = data_struct::OpenWeatherMapResponse {
-        base: data["base"].as_str().unwrap().to_string(),
-        clouds: data_struct::Clouds {
-            all: data["clouds"].get("all").unwrap().as_i64().unwrap(),
-        },
-        cod: data["cod"].as_i64().unwrap(),
-        coord: data_struct::Coord {
-            lat: data["coord"].get("lat").unwrap().as_f64().unwrap(),
-            lon: data["coord"].get("lon").unwrap().as_f64().unwrap(),
-        },
-        dt: data["dt"].as_i64().unwrap(),
-        id: data["id"].as_i64().unwrap(),
-        main: data_struct::Main {
-            feels_like: data["main"].get("feels_like").unwrap().as_f64().unwrap(),
-            grnd_level: data["main"].get("grnd_level").unwrap().as_i64().unwrap_or(0),
-            humidity: data["main"].get("humidity").unwrap().as_i64().unwrap(),
-            pressure: data["main"].get("pressure").unwrap().as_i64().unwrap(),
-            sea_level: data["main"].get("sea_level").unwrap().as_i64().unwrap(),
-            temp: data["main"].get("temp").unwrap().as_f64().unwrap(),
-            temp_max: data["main"].get("temp_max").unwrap().as_f64().unwrap(),
-            temp_min: data["main"].get("temp_min").unwrap().as_f64().unwrap(),
-        },
-        name: data["name"].as_str().unwrap().to_string(),
-        sys: data_struct::Sys {
-            sunrise: data["sys"].get("sunrise").unwrap().as_i64().unwrap(),
-            sunset: data["sys"].get("sunset").unwrap().as_i64().unwrap(),
-        },
-        timezone: data["timezone"].as_i64().unwrap(),
-        visibility: data["visibility"].as_i64().unwrap(),
-        weather: data["weather"].unwrap().data_struct::Weather {
-            // description: "weather".to_string(),
-            icon: data["weather"].get("icon").unwrap().to_string(),
-            // icon: "icon".to_string(),
-            id: data["weather"].get("id").unwrap().as_i64().unwrap(),
-            // id: 1234,
-            main: data["weather"].get("main").unwrap().to_string(),
-            // main: "main".to_string(),
-        },
-        wind: data_struct::Wind {
-            deg: data["wind"].get("deg").unwrap().as_i64().unwrap(),
-            // gust: data["wind"].get("gust").unwrap().as_f64().unwrap(),
-            gust: 0.0,
-            speed: data["wind"].get("speed").unwrap().as_f64().unwrap(),
-        }
-    };
+    let data = &response2.json::<Value>().await?;
+    println!("{}", to_string_pretty(&data).unwrap());
 
-
-    let json = serde_json::to_string_pretty(&data).unwrap();
-    println!("{}", &json);
-
+    let weather_data: OpenWeatherMapResponse = response.json().await?;
     println!("{:?}", &weather_data);
+
+    // error is currently: 
+    // Error: reqwest::Error { kind: Decode, source: Error("missing field `feelsLike`", line: 1, column: 229) }
+    
     Ok(())
 }

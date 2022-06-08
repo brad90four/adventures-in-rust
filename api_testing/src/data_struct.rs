@@ -16,7 +16,7 @@ pub struct OpenWeatherMapResponse {
     pub sys: Sys,
     pub timezone: i64,
     pub visibility: i64,
-    pub weather: Weather,
+    pub weather: Vec<Weather>,
     pub wind: Wind,
 }
 
@@ -57,12 +57,10 @@ pub struct Sys {
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct Weather {
-    vec:[
-        pub description: String,
-        pub icon: String,
-        pub id: i64,
-        pub main: String,
-    ];
+    pub description: String,
+    pub icon: String,
+    pub id: i64,
+    pub main: String,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
